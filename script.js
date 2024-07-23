@@ -18,7 +18,9 @@ document.getElementById('saveBtn').addEventListener('click',function(e){
     for(let taskItem of taskList.getElementsByTagName('li')){
         const task = {
             text: taskItem.childNodes[0].textContent,
-            completed: taskItem.classList.contains('completed')
+            status: taskItem.classList.contains('completed') 
+            ? 'completed' : taskItem.classList.contains('inProgress') 
+            ? 'inProgress' : 'pending'
         }
         tasks.push(task);
     }
@@ -36,19 +38,57 @@ if(tasks){
 
 function addTask(task) {
     const taskList = document.getElementById('tasks');
+
+    const statusContainer = document.createElement('div');
+
+    statusContainer.classList.toggle('status-container');
     const taskItem = document.createElement('li');
     taskItem.textContent = task.text;
-    if(task.completed){
+
+    const status = document.createElement('button');
+    status.textContent = 'Pending';
+
+
+    if(task.status === 'completed'){
         taskItem.classList.toggle('completed');
+        status.textContent = 'Completed';
     }
-    taskItem.addEventListener('click', function(){
-        taskItem.classList.toggle('completed');
+    else if(task.status === 'inProgress'){
+        taskItem.classList.toggle('inProgress');
+        status.textContent = 'In Progress';
+    }
+    else{
+        taskItem.classList.toggle('pending');
+        status.textContent = 'Pending';
+    }
+
+    status.addEventListener('click', function(){
+        if(taskItem.classList.contains('completed')){
+            taskItem.classList.remove('completed');
+            taskItem.classList.toggle('pending');
+            status.textContent = 'Pending';
+        }
+        else if(taskItem.classList.contains('pending'))
+        {
+            taskItem.classList.remove('pending');
+            taskItem.classList.toggle('inProgress');
+            status.textContent = 'In Progress';
+        }
+        else{
+            taskItem.classList.remove('inProgress');
+            taskItem.classList.toggle('completed');
+            status.textContent = 'Completed';
+        }
     })
+
     const removeButton = document.createElement('button');
     removeButton.textContent = 'Remove';
     removeButton.addEventListener('click', function(){
         taskList.removeChild(taskItem);
     })
-    taskItem.appendChild(removeButton);
+    statusContainer.appendChild(status);
+    statusContainer.appendChild(removeButton);
+
+    taskItem.appendChild(statusContainer);
     taskList.appendChild(taskItem);
 }

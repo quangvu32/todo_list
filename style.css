@@ -1,3 +1,7 @@
+.container{
+  background-color: rgb(141, 238, 238)
+}
+
 h1 {
     text-align:center;
 }
@@ -5,14 +9,29 @@ form{
     text-align: center;
 }
 
+
 li {
     display: flex;
     border-bottom: 1px solid gray;
+    border-radius: 5px;
     padding: 10px;
+    margin: 10px;
     justify-content: space-between;
+    background-color: antiquewhite;
 }
 
-li.completed {
-    text-decoration: line-through;
-    color: gray;
+li.pending {
+    background-color: rosybrown;
+    color: black;
+}
+
+li.inProgress {
+    background-color: rgb(228, 244, 63);
+    color: black;
+}
+
+.status-container{
+    display: flex;
+    justify-content: space-between;
+    
 }
